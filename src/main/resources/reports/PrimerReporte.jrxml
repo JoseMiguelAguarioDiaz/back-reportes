@@ -15,7 +15,7 @@
     a.price,
     a.release_date,
     a.image,
-    ar.name AS artist_name,
+    upper(ar.name) AS artist_name,
     s.title AS song_title,
     s.duracion AS song_duration
 FROM albums a
@@ -94,7 +94,7 @@ ORDER BY s.id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{album_title}+" - "+UPPER($F{artist_name})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{album_title}+" - "+$F{artist_name}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

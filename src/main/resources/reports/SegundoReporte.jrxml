@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SegundoReporte" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3391a02-0bef-400a-9ecc-66431251d956">
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="228"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="767"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="AdaptadorBD.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="artistId" class="java.lang.Long"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT a.id AS album_id, upper(a.title) AS album_title, upper(ar.name) AS artist_name, ar.profile_pic AS artist_profile_pic
+FROM artists ar
+JOIN albums a ON a.artist_id = ar.id
+WHERE ar.id = $P{artistId} ]]>
+	</queryString>
+	<field name="album_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="album_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="album_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="albums"/>
+	</field>
+	<field name="album_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="album_title"/>
+		<property name="com.jaspersoft.studio.field.label" value="album_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="albums"/>
+	</field>
+	<field name="artist_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="artist_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="artist_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="artists"/>
+	</field>
+	<field name="artist_profile_pic" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="artist_profile_pic"/>
+		<property name="com.jaspersoft.studio.field.label" value="artist_profile_pic"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="artists"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="232" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="167" y="10" width="220" height="120" uuid="83ab0638-ed8f-4e6c-beb3-d76a01744802">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{imagen} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="0" y="150" width="555" height="30" forecolor="#030303" uuid="05e1adc8-bc91-46f1-bd7a-7aa9a1d27f9e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{artist_name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="20" y="211" width="514" height="1" uuid="39ee8289-f366-4d26-9856-32d612d4870d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="120" y="60" width="330" height="30" uuid="4088cd2a-a355-4c55-b405-70c12055fe98">
+					<printWhenExpression><![CDATA[$P{imagen} == null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Este artista no tiene una imagen de perfil registrada ):]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="120" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
+				<reportElement x="20" y="0" width="514" height="30" uuid="91f3a535-1248-46c4-9cfd-3e1f3ae95c4e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{album_title}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="20" y="50" width="513" height="70" uuid="ddb0d928-0eb5-4a8b-b87d-12eba5e9b8f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="albumId">
+					<subreportParameterExpression><![CDATA[$F{album_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["reports/PrimerSubreporte.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="41">
+			<line>
+				<reportElement x="20" y="20" width="514" height="1" uuid="5defcfc6-1d0b-4cf4-83ba-d36cdf6a211d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</detail>
+</jasperReport>
