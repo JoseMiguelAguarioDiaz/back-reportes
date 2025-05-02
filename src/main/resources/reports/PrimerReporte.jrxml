@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PrimerReporte" pageWidth="612" pageHeight="792" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="adcf18d2-4aa3-4a02-86dd-7664e7d962fb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="AdaptadorBD.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="213"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="781"/>
+	<import value="org.apache.commons.codec.binary.Base64"/>
+	<parameter name="albumId" class="java.lang.Long"/>
+	<parameter name="imagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+    a.id AS album_id,
+    upper(a.title) AS album_title,
+    a.price,
+    a.release_date,
+    a.image,
+    ar.name AS artist_name,
+    s.title AS song_title,
+    s.duracion AS song_duration
+FROM albums a
+INNER JOIN artists ar ON a.artist_id = ar.id
+LEFT JOIN songs s ON s.album_id = a.id
+WHERE a.id = $P{albumId}  
+ORDER BY s.id]]>
+	</queryString>
+	<field name="album_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="album_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="album_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="albums"/>
+	</field>
+	<field name="album_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="album_title"/>
+		<property name="com.jaspersoft.studio.field.label" value="album_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="albums"/>
+	</field>
+	<field name="price" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="price"/>
+		<property name="com.jaspersoft.studio.field.label" value="price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="albums"/>
+	</field>
+	<field name="release_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="release_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="release_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="albums"/>
+	</field>
+	<field name="image" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="image"/>
+		<property name="com.jaspersoft.studio.field.label" value="image"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="albums"/>
+	</field>
+	<field name="artist_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="artist_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="artist_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="artists"/>
+	</field>
+	<field name="song_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="song_title"/>
+		<property name="com.jaspersoft.studio.field.label" value="song_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="songs"/>
+	</field>
+	<field name="song_duration" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="song_duration"/>
+		<property name="com.jaspersoft.studio.field.label" value="song_duration"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="songs"/>
+	</field>
+	<variable name="total_duration" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{song_duration}]]></variableExpression>
+	</variable>
+	<variable name="total_songs" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{song_title}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="170" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$P{imagen} != null]]></printWhenExpression>
+			<image>
+				<reportElement x="210" y="10" width="150" height="150" uuid="23357056-fa35-4f1b-b583-a9c85d648c38">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{imagen} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement x="1" y="2" width="570" height="30" forecolor="#030303" uuid="2e295ed2-bc5b-4063-8e66-e181c9ceb643"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{album_title}+" - "+UPPER($F{artist_name})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="20" y="21" width="400" height="20" uuid="0284edfc-dceb-40bb-bc71-2aab11c4a143">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TÍTULO DE LA CANCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="21" width="132" height="20" uuid="e7cf1e4f-2a44-449f-a4a9-1bc86c2ae85c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DURACIÓN]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="20" y="0" width="400" height="20" uuid="dd87925c-5ee4-4f32-9edd-a65c18412860">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{song_title}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="420" y="0" width="132" height="20" uuid="01a58741-545e-42a6-b077-724a1996b3b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{song_duration}+" min"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="40" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="1" y="5" width="569" height="30" uuid="b8d6fde6-271b-472d-8d0e-77f672809427"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA DE LANZAMIENTO " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{release_date})
+]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="80">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="150" y="5" width="419" height="30" uuid="05f7884a-56d4-4bdc-8d84-5a1aee79d139"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DURACIÓN TOTAL DEL ÁLBUM: "+$V{total_duration}+" min"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement x="150" y="40" width="419" height="30" uuid="fa664487-f858-436a-8f6d-baeb8f82c093"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NÚMERO DE CANCIONES DEL ÁLBUM: "+$V{total_songs}+" canciones"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+	<noData>
+		<band height="752">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="1" y="0" width="570" height="752" uuid="422ffa9d-6e4c-478e-a26c-b7a2fff07ddd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ups! No tenemos información de este reporte.]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>
